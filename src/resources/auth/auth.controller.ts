@@ -7,7 +7,6 @@ import {
   UseGuards,
   UsePipes,
 } from '@nestjs/common';
-import { Request } from 'express';
 import {
   EmailLoginValidator,
   EmailSinUpValidator,

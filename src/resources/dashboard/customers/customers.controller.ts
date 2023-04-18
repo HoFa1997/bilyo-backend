@@ -1,5 +1,3 @@
-import { responseGenerator } from 'src/shared/utils/responseGenerator';
-import { User } from 'src/schema/user.schema';
 import {
   Controller,
   Get,
