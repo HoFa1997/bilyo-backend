@@ -4,68 +4,72 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateCustomerDto, UpdateCustomerDto } from './customers.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
+import { IUser } from 'src/shared/interface/user';
+import { responseGenerator } from 'src/shared/utils/responseGenerator';
 
 @Injectable()
 export class CustomersService {
   constructor(
     @InjectModel(Customer.name) private customerModel: Model<Customer>,
+    @InjectModel(User.name) private userModel: Model<User>,
   ) {}
 
-  async create(
-    createCustomerDto: CreateCustomerDto,
-    currentUser: User | unknown,
-  ) {
-    const getCustomers = await this.customerModel.create({
+  async findUserByID(user: IUser) {
+    return await this.userModel.findOne({ email: user.id });
+  }
+
+  async create(createCustomerDto: CreateCustomerDto, user: IUser) {
+    const userAdd = await this.findUserByID(user);
+    const customer = await this.customerModel.create({
       ...createCustomerDto,
-      user: currentUser['_id'],
+      user: userAdd._id,
     });
-
-    return getCustomers;
+    return responseGenerator(`${customer._id}`, 'customer created');
   }
 
-  async findAll(currentUser: User | unknown) {
-    const getCustomers = await this.customerModel.find(
-      {
-        user: currentUser['_id'],
-      },
-      { user: 0 },
-    );
-    return getCustomers;
+  async findAll(user: IUser) {
+    const { _id } = await this.findUserByID(user);
+    const customers = await this.customerModel.find({ user: _id });
+    return customers;
   }
 
-  async findOne(id: string, currentUser: User | unknown) {
+  async findOne(id: string, user: IUser) {
     if (!Types.ObjectId.isValid(id)) {
       throw new HttpException('Invalid ID', HttpStatus.BAD_REQUEST);
     }
-    const getCustomer = await this.customerModel.findOne(
-      { user: currentUser['_id'], _id: id },
+    const { _id } = await this.findUserByID(user);
+    const customer = await this.customerModel.find(
+      { user: _id, _id: id },
       { user: 0 },
     );
-    if (!getCustomer) {
+    if (!customer) {
       throw new HttpException('Customer not found', HttpStatus.NOT_FOUND);
     }
-    return getCustomer;
+    return customer;
   }
 
-  async update(
-    id: string,
-    updateCustomerDto: UpdateCustomerDto,
-    currentUser: User | unknown,
-  ) {
-    const getUserCustomer = await this.findOne(id, currentUser);
-
+  async update(id: string, updateCustomerDto: UpdateCustomerDto, user: IUser) {
+    if (!Types.ObjectId.isValid(id)) {
+      throw new HttpException('Invalid ID', HttpStatus.BAD_REQUEST);
+    }
+    const { _id } = await this.findUserByID(user);
+    const customer = await this.customerModel.findOne({ user: _id, _id: id });
     const updatedCustomer = await this.customerModel.findByIdAndUpdate(
-      getUserCustomer['_id'],
+      customer._id,
       updateCustomerDto,
     );
-    return updatedCustomer;
+    return responseGenerator(`${updatedCustomer._id}`, 'customer updated');
   }
 
-  async remove(id: string, currentUser: User | unknown) {
-    const getUserCustomer = await this.findOne(id, currentUser);
+  async remove(id: string, user: IUser) {
+    if (!Types.ObjectId.isValid(id)) {
+      throw new HttpException('Invalid ID', HttpStatus.BAD_REQUEST);
+    }
+    const { _id } = await this.findUserByID(user);
+    const customer = await this.customerModel.findOne({ user: _id, _id: id });
     const removeCustomer = await this.customerModel.findByIdAndDelete(
-      getUserCustomer['_id'],
+      customer._id,
     );
-    return removeCustomer;
+    return responseGenerator(`${removeCustomer._id}`, 'customer deleted');
   }
 }

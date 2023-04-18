@@ -1,9 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
-import { mongooseConfig } from './../shared/utils/constant';
+
 export type SettingsDocument = HydratedDocument<Settings>;
 
-@Schema(mongooseConfig)
+@Schema()
 export class Tax {
   @Prop({ required: true })
   name: string;

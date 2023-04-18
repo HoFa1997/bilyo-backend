@@ -14,6 +14,7 @@ import {
 import { CustomersService } from './customers.service';
 import { CreateCustomerDto, UpdateCustomerDto } from './customers.dto';
 import { AuthGuard } from 'src/resources/auth/auth.guard';
+import { IUser } from 'src/shared/interface/user';
 
 @Controller('dashboard/customers')
 @UseGuards(AuthGuard)
@@ -22,25 +23,20 @@ export class CustomersController {
 
   @Post()
   async create(@Body() createCustomerDto: CreateCustomerDto, @Req() req) {
-    const currentUser = req.user as unknown as User;
-    const createdCustomer = await this.customersService.create(
-      createCustomerDto,
-      currentUser,
-    );
-
-    return responseGenerator(createdCustomer['id'], 'customer created');
+    const user = req.user as unknown as IUser;
+    return await this.customersService.create(createCustomerDto, user);
   }
 
   @Get()
   findAll(@Req() req) {
-    const currentUser = req.user as unknown as User;
-    return this.customersService.findAll(currentUser);
+    const user = req.user as unknown as IUser;
+    return this.customersService.findAll(user);
   }
 
   @Get(':id')
   findOne(@Param('id') id: string, @Req() req) {
-    const currentUser = req.user as unknown as User;
-    return this.customersService.findOne(id, currentUser);
+    const user = req.user as unknown as IUser;
+    return this.customersService.findOne(id, user);
   }
 
   @Patch(':id')
@@ -49,19 +45,13 @@ export class CustomersController {
     @Body() updateCustomerDto: UpdateCustomerDto,
     @Req() req,
   ) {
-    const currentUser = req.user as unknown as User;
-    const updatedCustomer = await this.customersService.update(
-      id,
-      updateCustomerDto,
-      currentUser,
-    );
-    return responseGenerator(updatedCustomer['id'], 'customer updated');
+    const user = req.user as unknown as IUser;
+    return await this.customersService.update(id, updateCustomerDto, user);
   }
 
   @Delete(':id')
   async remove(@Param('id') id: string, @Req() req) {
-    const currentUser = req.user as unknown as User;
-    const deletedCustomer = await this.customersService.remove(id, currentUser);
-    return responseGenerator(deletedCustomer['id'], 'customer deleted');
+    const user = req.user as unknown as IUser;
+    return await this.customersService.remove(id, user);
   }
 }

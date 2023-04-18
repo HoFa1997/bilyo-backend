@@ -1,10 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
 import { Invoice } from './invoice.schema';
-import { mongooseConfig } from './../shared/utils/constant';
+
 export type PaymentDocument = HydratedDocument<Payment>;
 
-@Schema(mongooseConfig)
+@Schema()
 export class Payment {
   @Prop({ type: Types.ObjectId, ref: 'Invoice', required: true })
   invoice: Invoice;

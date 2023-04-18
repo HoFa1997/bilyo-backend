@@ -2,10 +2,10 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
 import { Product } from './product.schema';
 import { RULES } from 'src/shared/enums/rulesEnums';
-import { mongooseConfig } from './../shared/utils/constant';
+
 export type UserDocument = HydratedDocument<User>;
 
-@Schema(mongooseConfig)
+@Schema()
 export class User {
   @Prop({ default: null })
   name: string;

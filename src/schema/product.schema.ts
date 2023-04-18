@@ -1,11 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
 import { User } from './user.schema';
-import { mongooseConfig } from 'src/shared/utils/constant';
 
 export type ProductDocument = HydratedDocument<Product>;
 
-@Schema(mongooseConfig)
+@Schema()
 export class Product {
   @Prop({ type: Types.ObjectId, ref: 'User' })
   user: User;

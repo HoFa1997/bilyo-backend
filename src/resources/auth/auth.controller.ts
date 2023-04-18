@@ -21,6 +21,7 @@ import {
 import { AuthService } from './auth.service';
 import { JoiValidationPipe } from './validate.pipe';
 import { AuthGuard } from './auth.guard';
+import { IUser } from 'src/shared/interface/user';
 
 @Controller('auth')
 export class AuthController {
@@ -52,13 +53,15 @@ export class AuthController {
 
   @Get('isvalid')
   @UseGuards(AuthGuard)
-  checkUserToken(@Req() req: Request) {
-    return this.authService.checkUserToken(req);
+  checkUserToken(@Req() req) {
+    const user = req.user as unknown as IUser;
+    return this.authService.checkUserToken(user);
   }
 
   @Get('checkRule')
   @UseGuards(AuthGuard)
-  checkRole(@Req() req: Request) {
-    return this.authService.checkRule(req);
+  checkRole(@Req() req) {
+    const user = req.user as unknown as IUser;
+    return this.authService.checkRule(user);
   }
 }

@@ -12,15 +12,4 @@ export enum constantData {
   expireDateJWTRefresh = 31536000000, //1y
 }
 
-export const mongooseConfig = {
-  versionKey: false,
-  id: true,
-  toJSON: {
-    transform(doc, ret) {
-      ret.id = ret._id;
-      delete ret._id;
-    },
-  },
-};
-
-export const version = '1.0.7';
+export const version = '1.0.8';

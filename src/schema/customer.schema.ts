@@ -1,11 +1,10 @@
-import { mongooseConfig } from './../shared/utils/constant';
 import { User } from 'src/schema/user.schema';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
 
 export type CustomerDocument = HydratedDocument<Customer>;
 
-@Schema(mongooseConfig)
+@Schema()
 export class Customer {
   @Prop({ required: true })
   first_name: string;

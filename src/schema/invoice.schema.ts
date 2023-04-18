@@ -4,11 +4,11 @@ import { Customer } from './customer.schema';
 import { STATUS } from 'src/shared/enums/invoiceStatus';
 import { Product } from './product.schema';
 import { generateUniqueId } from 'src/shared/utils/uniqIdGenerator';
-import { mongooseConfig } from './../shared/utils/constant';
+
 import { User } from './user.schema';
 export type InvoiceDocument = HydratedDocument<Invoice>;
 
-@Schema(mongooseConfig)
+@Schema()
 export class InvoiceLineItem {
   @Prop({ required: true, type: Types.ObjectId, ref: 'Product' })
   product: Product;
@@ -20,7 +20,7 @@ export class InvoiceLineItem {
   totalPrice: number;
 }
 
-@Schema(mongooseConfig)
+@Schema()
 export class Invoice {
   @Prop({ default: () => generateUniqueId() })
   invoiceNumber: string;

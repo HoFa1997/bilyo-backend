@@ -111,8 +111,7 @@ export class AuthService {
     return true;
   }
 
-  async checkRule(req: Request) {
-    const { user } = req as unknown as IUser;
+  async checkRule(user: IUser) {
     const { rules } = await this.userModel.findOne({ email: user.id });
     return responseGenerator(user.id, rules);
   }
@@ -163,8 +162,7 @@ export class AuthService {
     };
   }
 
-  async checkUserToken(req: Request) {
-    const { user } = req as unknown as IUser;
+  async checkUserToken(user: IUser) {
     return responseGenerator(user.id, 'token valid');
   }
 }
