@@ -17,6 +17,7 @@ export const cookieOption: CookieOptions = {
   domain: 'bilyo.runflare.run', // Your API URL
   httpOnly: true, // Cookie is accessible only by the web server
   secure: true, // Cookie is only sent over HTTPS
+  sameSite: 'strict',
 };
 
 export const cookieTokenKey = 'token';
@@ -32,4 +33,4 @@ export const mongooseConfig = {
   },
 };
 
-export const version = '1.0.5';
+export const version = '1.0.6';
