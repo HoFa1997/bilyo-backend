@@ -14,12 +14,9 @@ export enum constantData {
 }
 
 export const cookieOption: CookieOptions = {
-  httpOnly: false,
-  secure: true,
-  maxAge: constantData.expireDateJWT,
-  path: '/',
-  sameSite: 'none',
-  domain: 'https://www.bilyo.ir',
+  domain: 'bilyo.runflare.run', // Your API URL
+  httpOnly: true, // Cookie is accessible only by the web server
+  secure: true, // Cookie is only sent over HTTPS
 };
 
 export const cookieTokenKey = 'token';
@@ -35,4 +32,4 @@ export const mongooseConfig = {
   },
 };
 
-export const version = '1.0.3';
+export const version = '1.0.4';
