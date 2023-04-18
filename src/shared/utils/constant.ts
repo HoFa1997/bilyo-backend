@@ -14,11 +14,11 @@ export enum constantData {
 }
 
 export const cookieOption: CookieOptions = {
-  httpOnly: false,
+  httpOnly: true,
   secure: true,
   maxAge: constantData.expireDateJWT,
   path: '/',
-  // sameSite: 'none',
+  sameSite: 'lax',
 };
 
 export const cookieTokenKey = 'token';
