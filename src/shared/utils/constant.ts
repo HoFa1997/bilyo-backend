@@ -32,4 +32,4 @@ export const mongooseConfig = {
       delete ret._id;
     },
   },
-}
+};

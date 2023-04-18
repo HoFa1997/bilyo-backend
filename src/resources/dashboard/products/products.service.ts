@@ -21,9 +21,12 @@ export class ProductsService {
   }
 
   async findAll(user: User | unknown) {
-    const getUserProducts: Product[] = await this.productModel.find({
-      user: user['_id'],
-    }, {user: 0});
+    const getUserProducts: Product[] = await this.productModel.find(
+      {
+        user: user['_id'],
+      },
+      { user: 0 },
+    );
     return getUserProducts;
   }
 
@@ -32,15 +35,22 @@ export class ProductsService {
       throw new HttpException('Invalid ID', HttpStatus.BAD_REQUEST);
     }
 
-    const getUserProduct: Product = await this.productModel.findOne({user: user['_id'], _id: id}, {user: 0})
+    const getUserProduct: Product = await this.productModel.findOne(
+      { user: user['_id'], _id: id },
+      { user: 0 },
+    );
     if (!getUserProduct) {
       throw new HttpException('Product not found', HttpStatus.NOT_FOUND);
     }
     return getUserProduct;
   }
 
-  async update(id: string, updateProductDto: UpdateProductDto, user: User | unknown) {
-    const getUserProduct = await this.findOne(id, user)
+  async update(
+    id: string,
+    updateProductDto: UpdateProductDto,
+    user: User | unknown,
+  ) {
+    const getUserProduct = await this.findOne(id, user);
 
     const updatedProduct: Product = await this.productModel.findByIdAndUpdate(
       getUserProduct['_id'],
@@ -50,8 +60,9 @@ export class ProductsService {
   }
 
   async remove(id: string, user: User | unknown) {
-    const getUserProduct = await this.findOne(id, user)
-    const deleteUserProduct: Product = await this.productModel.findByIdAndDelete(getUserProduct['_id']);
+    const getUserProduct = await this.findOne(id, user);
+    const deleteUserProduct: Product =
+      await this.productModel.findByIdAndDelete(getUserProduct['_id']);
     return deleteUserProduct;
   }
 }

@@ -24,7 +24,7 @@ export class InvoiceLineItem {
 export class Invoice {
   @Prop({ default: () => generateUniqueId() })
   invoiceNumber: string;
-  
+
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
   user: User;
 

@@ -13,7 +13,7 @@ import { UsersModule } from './resources/dashboard/users/users.module';
 @Module({
   imports: [
     MongooseModule.forRoot(
-      'mongodb+srv://Fatemi1375:Fatemi1375@bilyodb.ebjk2ff.mongodb.net/?retryWrites=true&w=majority'
+      'mongodb+srv://Fatemi1375:Fatemi1375@bilyodb.ebjk2ff.mongodb.net/?retryWrites=true&w=majority',
     ),
     AuthModule,
     ProductsModule,

@@ -1,8 +1,7 @@
-import cookieParser from 'cookie-parser';
+import * as cookieParser from 'cookie-parser';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ACCESS_TOKEN_SECRET_KEY } from './shared/utils/constant';
-import { join } from 'path';
 import * as express from 'express';
 
 async function bootstrap() {

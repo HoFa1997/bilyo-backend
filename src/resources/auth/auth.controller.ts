@@ -1,24 +1,16 @@
-import { FileInterceptor } from '@nestjs/platform-express';
 import {
   Body,
   Controller,
-  FileTypeValidator,
   Get,
-  MaxFileSizeValidator,
-  ParseFilePipe,
-  Patch,
   Post,
   Req,
   Res,
-  UploadedFile,
   UseGuards,
-  UseInterceptors,
   UsePipes,
 } from '@nestjs/common';
-import { Request, Response, Express } from 'express';
+import { Request, Response } from 'express';
 // dont remove it
 // eslint-disable-next-line
-import { Multer } from 'multer';
 import {
   EmailLoginValidator,
   EmailSinUpValidator,
@@ -49,7 +41,7 @@ export class AuthController {
   @UsePipes(new JoiValidationPipe(MobileOtpValidator))
   async checkOtp(
     @Body() verifyOtpDto: IMobileOtp,
-    @Res({ passthrough: true }) res: Response
+    @Res({ passthrough: true }) res: Response,
   ) {
     return await this.authService.checkotp(verifyOtpDto, res);
   }
@@ -69,8 +61,8 @@ export class AuthController {
   @Get('checkRule')
   @UseGuards(JwtAuthGuard)
   async checkRule(@Req() req: Request) {
-    const user = req.user as unknown as User;
-    return await this.authService.checkRule(user);
+    // const user = req.user as unknown as User;
+    // return await this.authService.checkRule(user);
   }
 
   @Get('logout')

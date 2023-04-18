@@ -13,10 +13,7 @@ import {
   Req,
 } from '@nestjs/common';
 import { InvoicesService } from './invoices.service';
-import {
-  CreateInvoiceDto,
-  UpdateInvoiceDto,
-} from './invoices.dto';
+import { CreateInvoiceDto, UpdateInvoiceDto } from './invoices.dto';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('dashboard/invoices')
@@ -27,7 +24,10 @@ export class InvoicesController {
   @Post()
   async create(@Body() createInvoiceDto: CreateInvoiceDto, @Req() req) {
     const currentUser = req.user as unknown as User;
-    const createdInvoice = await this.invoicesService.create(createInvoiceDto, currentUser);
+    const createdInvoice = await this.invoicesService.create(
+      createInvoiceDto,
+      currentUser,
+    );
     return responseGenerator(createdInvoice['id'], 'created invoice');
   }
 
@@ -47,13 +47,13 @@ export class InvoicesController {
   async update(
     @Param('id') id: string,
     @Body() updateInvoiceDto: UpdateInvoiceDto,
-    @Req() req
+    @Req() req,
   ) {
     const currentUser = req.user as unknown as User;
     const updatedInvoice = await this.invoicesService.update(
       id,
       updateInvoiceDto,
-      currentUser
+      currentUser,
     );
     return responseGenerator(updatedInvoice['id'], 'updated invoice');
   }

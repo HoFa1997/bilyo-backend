@@ -10,7 +10,9 @@ import { Customer, CustomerSchema } from 'src/schema/customer.schema';
   imports: [
     MongooseModule.forFeature([{ name: Invoice.name, schema: InvoiceSchema }]),
     MongooseModule.forFeature([{ name: Product.name, schema: ProductSchema }]),
-    MongooseModule.forFeature([{ name: Customer.name, schema: CustomerSchema }]),
+    MongooseModule.forFeature([
+      { name: Customer.name, schema: CustomerSchema },
+    ]),
   ],
   controllers: [InvoicesController],
   providers: [InvoicesService],

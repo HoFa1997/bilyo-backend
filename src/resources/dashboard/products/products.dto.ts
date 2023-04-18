@@ -6,7 +6,7 @@ export const ProductValidator = Joi.object({
   description: Joi.string().required(),
   price: Joi.number().required(),
   categories: Joi.array().items(Joi.string()),
-  qty: Joi.number()
+  qty: Joi.number(),
 });
 
 export class CreateProductDto {
@@ -14,7 +14,7 @@ export class CreateProductDto {
   user: string;
   description: string;
   categories: string[];
-  qty:number
+  qty: number;
   price: number;
 }
 export class UpdateProductDto extends PartialType(CreateProductDto) {
@@ -22,6 +22,6 @@ export class UpdateProductDto extends PartialType(CreateProductDto) {
   user: string;
   description: string;
   categories: string[];
-  qty:number
+  qty: number;
   price: number;
 }

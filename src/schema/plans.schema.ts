@@ -5,14 +5,14 @@ export type PlanDocument = HydratedDocument<Plans>;
 
 @Schema(mongooseConfig)
 export class Plans {
-    @Prop({ required: true })
-    title: string
+  @Prop({ required: true })
+  title: string;
 
-    @Prop({ required: true })
-    price: number
+  @Prop({ required: true })
+  price: number;
 
-    @Prop({ required: true })
-    options: string[]
+  @Prop({ required: true })
+  options: string[];
 }
 
 export const PlansSchema = SchemaFactory.createForClass(Plans);

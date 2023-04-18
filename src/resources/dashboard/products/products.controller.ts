@@ -21,7 +21,6 @@ import { AuthGuard } from '@nestjs/passport';
 import { User } from 'src/schema/user.schema';
 import { responseGenerator } from 'src/shared/utils/responseGenerator';
 
-
 @Controller('dashboard/products')
 @UseGuards(AuthGuard('jwt'))
 export class ProductsController {
@@ -36,43 +35,43 @@ export class ProductsController {
       currentUser,
     );
 
-    return responseGenerator(createUser.id, 'product created')
+    return responseGenerator(createUser.id, 'product created');
   }
 
   @Get()
   async findAll(@Req() req) {
     const currentUser = req.user as unknown as User;
     const getProducts = await this.productsService.findAll(currentUser);
-    return getProducts
+    return getProducts;
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string, @Req() req) {
     const currentUser = req.user as unknown as User;
     const getProduct = await this.productsService.findOne(id, currentUser);
-    return getProduct
+    return getProduct;
   }
 
   @Patch(':id')
   async update(
     @Param('id') id: string,
     @Body() updateProductDto: UpdateProductDto,
-    @Req() req
+    @Req() req,
   ) {
     const currentUser = req.user as unknown as User;
     const updateProduct = await this.productsService.update(
       id,
       updateProductDto,
-      currentUser
+      currentUser,
     );
 
-    return responseGenerator(updateProduct['id'], 'product updated')
+    return responseGenerator(updateProduct['id'], 'product updated');
   }
 
   @Delete(':id')
   async remove(@Param('id') id: string, @Req() req) {
     const currentUser = req.user as unknown as User;
-    const deleteProduct = await this.productsService.remove(id,currentUser);
-    return responseGenerator(deleteProduct['id'], 'product deleted')
+    const deleteProduct = await this.productsService.remove(id, currentUser);
+    return responseGenerator(deleteProduct['id'], 'product deleted');
   }
 }

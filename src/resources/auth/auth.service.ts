@@ -17,14 +17,13 @@ import {
   cookieTokenKey,
 } from '../../shared/utils/constant';
 import * as bcrypt from 'bcrypt';
-import * as fs from 'fs';
 import { responseGenerator } from 'src/shared/utils/responseGenerator';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectModel(User.name) private userModel: Model<User>,
-    private jwtService: JwtService
+    private jwtService: JwtService,
   ) {}
 
   async getotp(loginWithMobileDto: IMobile) {
@@ -97,7 +96,7 @@ export class AuthService {
     const expiresIn = new Date().getTime() + 120000;
     const updateUser = await this.userModel.updateOne(
       { mobile },
-      { otp, expiresIn }
+      { otp, expiresIn },
     );
     if (!updateUser) throw new BadRequestException('Error in update user');
     // return 'new code sent';
@@ -108,7 +107,7 @@ export class AuthService {
     const expiresIn = null;
     const updateUser = await this.userModel.updateOne(
       { mobile },
-      { otp, expiresIn }
+      { otp, expiresIn },
     );
     if (!updateUser) return false;
 
@@ -166,10 +165,10 @@ export class AuthService {
   }
 
   async checkUserToken(req: Request, res: Response) {
-    const user = req.user as unknown as User;
-    if (!user) throw new UnauthorizedException('token invalid');
-    const { id } = await this.userModel.findOne({ email: user.email });
-    res.status(200).send(responseGenerator(id, 'token valid'));
+    // const user = req.user as unknown as User;
+    // if (!user) throw new UnauthorizedException('token invalid');
+    // const { id } = await this.userModel.findOne({ email: user.email });
+    // res.status(200).send(responseGenerator(id, 'token valid'));
   }
 
   async logout(res: Response) {

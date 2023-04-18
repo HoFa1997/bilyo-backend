@@ -23,9 +23,12 @@ export class CustomersController {
   @Post()
   async create(@Body() createCustomerDto: CreateCustomerDto, @Req() req) {
     const currentUser = req.user as unknown as User;
-    const createdCustomer = await this.customersService.create(createCustomerDto, currentUser);
-    
-    return responseGenerator(createdCustomer['id'], 'customer created')
+    const createdCustomer = await this.customersService.create(
+      createCustomerDto,
+      currentUser,
+    );
+
+    return responseGenerator(createdCustomer['id'], 'customer created');
   }
 
   @Get()
@@ -44,17 +47,21 @@ export class CustomersController {
   async update(
     @Param('id') id: string,
     @Body() updateCustomerDto: UpdateCustomerDto,
-    @Req() req
+    @Req() req,
   ) {
     const currentUser = req.user as unknown as User;
-    const updatedCustomer = await this.customersService.update(id, updateCustomerDto, currentUser);
-    return responseGenerator(updatedCustomer['id'], 'customer updated')
+    const updatedCustomer = await this.customersService.update(
+      id,
+      updateCustomerDto,
+      currentUser,
+    );
+    return responseGenerator(updatedCustomer['id'], 'customer updated');
   }
 
   @Delete(':id')
   async remove(@Param('id') id: string, @Req() req) {
     const currentUser = req.user as unknown as User;
     const deletedCustomer = await this.customersService.remove(id, currentUser);
-    return responseGenerator(deletedCustomer['id'], 'customer deleted')
+    return responseGenerator(deletedCustomer['id'], 'customer deleted');
   }
 }
