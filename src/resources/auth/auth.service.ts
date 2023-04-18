@@ -4,20 +4,17 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { Response, Request } from 'express';
+import { Request } from 'express';
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { RandomNumberGenerator } from '../../shared/utils/randomNumGen';
 import { IEmailLogin, IEmailSinup, IMobile, IMobileOtp } from './auth.dto';
 import { User } from '../../schema/user.schema';
-import {
-  constantData,
-  cookieOption,
-  cookieTokenKey,
-} from '../../shared/utils/constant';
+import { constantData } from '../../shared/utils/constant';
 import * as bcrypt from 'bcrypt';
 import { responseGenerator } from 'src/shared/utils/responseGenerator';
+import { IUser } from 'src/shared/interface/user';
 
 @Injectable()
 export class AuthService {
@@ -38,7 +35,7 @@ export class AuthService {
     };
   }
 
-  async checkotp(verifyOtpDto: IMobileOtp, res: Response) {
+  async checkotp(verifyOtpDto: IMobileOtp) {
     const { mobile: mobileNumber, otp: verfiyCode } = verifyOtpDto;
     const userExist = await this.userModel.findOne({ mobile: mobileNumber });
     const { expiresIn, otp, mobile } = userExist;
@@ -54,7 +51,7 @@ export class AuthService {
     if (!userExpireOtp)
       throw new UnauthorizedException('کد ارسال شده اشتباه است');
 
-    const payload = { mobile, expiresIn };
+    const payload = { id: mobile };
 
     // Generate an access token with a short expiration time
     const accessToken = this.jwtService.sign(payload, {
@@ -66,10 +63,10 @@ export class AuthService {
     //   expiresIn: constantData.expireDateJWTRefresh,
     // });
 
-    res
-      .cookie(cookieTokenKey, accessToken, cookieOption)
-      .status(200)
-      .send(responseGenerator(userExist.id, 'login success'));
+    return {
+      token: accessToken,
+      message: 'login success',
+    };
   }
 
   async checkExistUser(email: string) {
@@ -114,11 +111,13 @@ export class AuthService {
     return true;
   }
 
-  async checkRule(data: User) {
-    return { rule: data.rules };
+  async checkRule(req: Request) {
+    const { user } = req as unknown as IUser;
+    const { rules } = await this.userModel.findOne({ email: user.id });
+    return responseGenerator(user.id, rules);
   }
 
-  async sinupUser(emailDto: IEmailSinup, res: Response) {
+  async sinupUser(emailDto: IEmailSinup) {
     const { email, password, name } = emailDto;
     const user = await this.userModel.findOne({ email });
     if (user) throw new ConflictException('This email address is already');
@@ -130,24 +129,24 @@ export class AuthService {
       password: hash,
     });
     if (!newUser) throw new BadRequestException('Error on user creating');
-    const payload = { email, password };
+    const payload = { id: email };
     const accessToken = this.jwtService.sign(payload, {
       expiresIn: constantData.expireDateJWT,
     });
 
-    res
-      .cookie(cookieTokenKey, accessToken, cookieOption)
-      .status(200)
-      .send(responseGenerator(newUser.id, 'user created'));
+    return {
+      token: accessToken,
+      message: 'login success',
+    };
   }
 
-  async singInUser(emailDto: IEmailLogin, res: Response) {
+  async singInUser(emailDto: IEmailLogin) {
     const { password, email } = emailDto;
     const user = await this.userModel.findOne({ email });
     if (!user) throw new BadRequestException();
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) throw new UnauthorizedException();
-    const payload = { email, password };
+    const payload = { id: email };
     // Generate an access token with a short expiration time
     const accessToken = this.jwtService.sign(payload, {
       expiresIn: constantData.expireDateJWT,
@@ -158,24 +157,14 @@ export class AuthService {
     //   expiresIn: constantData.expireDateJWTRefresh,
     // });
 
-    res
-      .cookie(cookieTokenKey, accessToken, cookieOption)
-      .status(200)
-      .send(responseGenerator(user.id, 'login success'));
+    return {
+      token: accessToken,
+      message: 'login success',
+    };
   }
 
-  async checkUserToken(req: Request, res: Response) {
-    // const user = req.user as unknown as User;
-    // if (!user) throw new UnauthorizedException('token invalid');
-    // const { id } = await this.userModel.findOne({ email: user.email });
-    // res.status(200).send(responseGenerator(id, 'token valid'));
-  }
-
-  async logout(res: Response) {
-    res
-      .clearCookie(cookieTokenKey)
-      .status(200)
-      .send(responseGenerator('unknow', 'logout success'));
-    return;
+  async checkUserToken(req: Request) {
+    const { user } = req as unknown as IUser;
+    return responseGenerator(user.id, 'token valid');
   }
 }

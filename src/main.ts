@@ -5,7 +5,7 @@ import { ACCESS_TOKEN_SECRET_KEY } from './shared/utils/constant';
 import * as express from 'express';
 
 async function bootstrap() {
-  const port = process.env.PORT || 8000; // default to port 8000 if not specified in environment variable
+  const port = 8000; // default to port 8000 if not specified in environment variable
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
