@@ -33,3 +33,5 @@ export const mongooseConfig = {
     },
   },
 };
+
+export const version = '1';
