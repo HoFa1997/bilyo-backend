@@ -19,6 +19,7 @@ export const cookieOption: CookieOptions = {
   maxAge: constantData.expireDateJWT,
   path: '/',
   sameSite: 'none',
+  domain: 'bilyo.ir',
 };
 
 export const cookieTokenKey = 'token';
@@ -34,4 +35,4 @@ export const mongooseConfig = {
   },
 };
 
-export const version = '1.0.1';
+export const version = '1.0.2';
