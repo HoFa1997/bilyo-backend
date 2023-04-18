@@ -18,7 +18,7 @@ export const cookieOption: CookieOptions = {
   secure: true,
   maxAge: constantData.expireDateJWT,
   path: '/',
-  sameSite: 'lax',
+  sameSite: 'none',
 };
 
 export const cookieTokenKey = 'token';
@@ -34,4 +34,4 @@ export const mongooseConfig = {
   },
 };
 
-export const version = '1';
+export const version = '1.0.1';
