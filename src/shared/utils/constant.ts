@@ -15,7 +15,7 @@ export enum constantData {
 
 export const cookieOption: CookieOptions = {
   httpOnly: false,
-  secure: false,
+  secure: true,
   maxAge: constantData.expireDateJWT,
   path: '/',
   // sameSite: 'none',
