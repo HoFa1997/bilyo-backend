@@ -17,7 +17,7 @@ export const cookieOption: CookieOptions = {
   domain: 'bilyo.runflare.run', // Your API URL
   httpOnly: true, // Cookie is accessible only by the web server
   secure: true, // Cookie is only sent over HTTPS
-  sameSite: 'strict',
+  sameSite: 'none',
 };
 
 export const cookieTokenKey = 'token';
