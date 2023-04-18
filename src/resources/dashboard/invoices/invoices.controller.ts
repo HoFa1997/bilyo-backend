@@ -8,16 +8,15 @@ import {
   Patch,
   Param,
   Delete,
-  Put,
   UseGuards,
   Req,
 } from '@nestjs/common';
 import { InvoicesService } from './invoices.service';
 import { CreateInvoiceDto, UpdateInvoiceDto } from './invoices.dto';
-import { AuthGuard } from '@nestjs/passport';
+import { AuthGuard } from 'src/resources/auth/auth.guard';
 
 @Controller('dashboard/invoices')
-@UseGuards(AuthGuard('jwt'))
+@UseGuards(AuthGuard)
 export class InvoicesController {
   constructor(private readonly invoicesService: InvoicesService) {}
 

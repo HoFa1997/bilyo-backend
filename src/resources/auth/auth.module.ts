@@ -5,13 +5,12 @@ import { User, UserSchema } from '../../schema/user.schema';
 import { MongooseModule } from '@nestjs/mongoose';
 import { JwtModule } from '@nestjs/jwt';
 import { ACCESS_TOKEN_SECRET_KEY } from '../../shared/utils/constant';
-import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
-    PassportModule,
     JwtModule.register({
+      global: true,
       secret: ACCESS_TOKEN_SECRET_KEY,
       signOptions: { expiresIn: '60s' },
     }),

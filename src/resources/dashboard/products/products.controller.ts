@@ -17,12 +17,13 @@ import {
   ProductValidator,
 } from './products.dto';
 import { JoiValidationPipe } from 'src/resources/auth/validate.pipe';
-import { AuthGuard } from '@nestjs/passport';
+
 import { User } from 'src/schema/user.schema';
 import { responseGenerator } from 'src/shared/utils/responseGenerator';
+import { AuthGuard } from 'src/resources/auth/auth.guard';
 
 @Controller('dashboard/products')
-@UseGuards(AuthGuard('jwt'))
+@UseGuards(AuthGuard)
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 

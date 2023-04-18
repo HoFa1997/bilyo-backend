@@ -16,12 +16,12 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './users.dto';
-import { AuthGuard } from '@nestjs/passport';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import * as fs from 'fs';
+import { AuthGuard } from 'src/resources/auth/auth.guard';
 
 @Controller('dashboard/users')
-@UseGuards(AuthGuard('jwt'))
+@UseGuards(AuthGuard)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
