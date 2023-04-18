@@ -14,7 +14,7 @@ export enum constantData {
 }
 
 export const cookieOption: CookieOptions = {
-  httpOnly: true,
+  httpOnly: false,
   secure: true,
   maxAge: constantData.expireDateJWT,
   path: '/',
@@ -35,4 +35,4 @@ export const mongooseConfig = {
   },
 };
 
-export const version = '1.0.2';
+export const version = '1.0.3';
