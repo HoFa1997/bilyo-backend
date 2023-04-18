@@ -19,7 +19,7 @@ export const cookieOption: CookieOptions = {
   maxAge: constantData.expireDateJWT,
   path: '/',
   sameSite: 'none',
-  domain: 'bilyo.ir',
+  domain: 'https://www.bilyo.ir',
 };
 
 export const cookieTokenKey = 'token';
