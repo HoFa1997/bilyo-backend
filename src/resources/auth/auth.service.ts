@@ -11,6 +11,7 @@ import { RandomNumberGenerator } from '../../shared/utils/randomNumGen';
 import { IMobile, IMobileOtp } from './auth.dto';
 import { User } from '../../schema/user.schema';
 import { constantData } from '../../shared/utils/constant';
+import { responseGenerator } from 'src/shared/utils/responseGenerator';
 
 @Injectable()
 export class AuthService {
@@ -101,5 +102,12 @@ export class AuthService {
     if (!updateUser) return false;
 
     return true;
+  }
+
+  async checkUserToken(req, res) {
+    const user = req.user as unknown as User;
+    if (!user) throw new UnauthorizedException('token invalid');
+    const { id } = await this.userModel.findOne({ mobile: user['id'] });
+    res.status(200).send(responseGenerator(id, 'token valid'));
   }
 }

@@ -1,8 +1,12 @@
+import { AuthGuard } from './auth.guard';
 import {
   Body,
   Controller,
   Get,
   Post,
+  Req,
+  Res,
+  UseGuards,
   UsePipes,
 } from '@nestjs/common';
 import {
@@ -30,10 +34,9 @@ export class AuthController {
     return await this.authService.checkotp(verifyOtpDto);
   }
 
-  @Get("invalid")
-  async invalid(@Body() verifyOtpDto: IMobileOtp) {
-    return {
-      message: "khodas"
-    }
+  @Get("isvalid")
+  @UseGuards(AuthGuard)
+  async isvalid(@Req() req, @Res() res) {
+    return this.authService.checkUserToken(req, res);
   }
 }
