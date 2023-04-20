@@ -8,17 +8,11 @@ import { Model } from 'mongoose';
 export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
-  async updateUser(currentUser: User | unknown, updateUserDto: UpdateUserDto) {
-    const updatedUser = await this.userModel.findByIdAndUpdate(
-      currentUser['id'],
-      updateUserDto,
-    );
-    return updatedUser;
-  }
-
   async setAvatar(currentUser: User | unknown, fileName: string) {
+    console.log(currentUser);
+    
     const updatedUser = await this.userModel.findByIdAndUpdate(
-      currentUser['id'],
+      currentUser['_id'],
       { avatar: fileName },
     );
     return updatedUser;
@@ -30,5 +24,9 @@ export class UsersService {
       { avatar: null },
     );
     return updatedUser;
+  }
+
+  async currentUser(currentUser) {
+    return await this.userModel.findOne({ mobile: currentUser['id'] })
   }
 }

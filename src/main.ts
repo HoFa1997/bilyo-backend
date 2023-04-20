@@ -15,7 +15,7 @@ async function bootstrap() {
   });
   app.use(cookieParser(ACCESS_TOKEN_SECRET_KEY));
 
-  app.use(express.static('packages/backend/public'));
+  app.use(express.static('public'));
   await app.listen(port);
 }
 

@@ -8,9 +8,6 @@ export type UserDocument = HydratedDocument<User>;
 @Schema()
 export class User {
   @Prop({ default: null })
-  name: string;
-
-  @Prop({ default: null })
   mobile: string;
 
   @Prop({ default: null })

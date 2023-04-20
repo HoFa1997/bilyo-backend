@@ -37,16 +37,16 @@ export class UsersController {
     )
     avatar: Express.Multer.File,
   ) {
-    const currentUser = req.user as User as unknown;
 
-    if (!fs.existsSync('packages/backend/public/uploads')) {
-      fs.mkdirSync('packages/backend/public/uploads', { recursive: true });
+    const currentUser = await this.currentUser(req)
+
+    if (!fs.existsSync('public/uploads')) {
+      fs.mkdirSync('public/uploads', { recursive: true });
     }
-
     if (currentUser['avatar']) {
       const currentImage = currentUser['avatar'].split('/');
       fs.unlinkSync(
-        `packages/backend/public/uploads/${
+        `public/uploads/${
           currentImage[currentImage.length - 1]
         }`,
       );
@@ -57,12 +57,13 @@ export class UsersController {
     const timeStamp = new Date().getTime();
     const fileName = `${timeStamp}-${originName}`;
     fs.writeFileSync(
-      `packages/backend/public/uploads/${fileName}`,
+      `public/uploads/${fileName}`,
       avatar[0].buffer,
     );
 
     if (!currentUser)
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+
     const currentHostPath = `${req.protocol}://${req.get(
       'Host',
     )}/uploads/${fileName}`;
@@ -70,20 +71,9 @@ export class UsersController {
     return responseGenerator(currentUser['id'], 'user avatar created');
   }
 
-  @Patch('edit')
-  async updateUser(@Body() updateUserDto: UpdateUserDto, @Req() req) {
-    const currentUser = req.user as User as unknown;
-    if (!currentUser)
-      throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
-    const updatedUser = await this.usersService.updateUser(
-      currentUser,
-      updateUserDto,
-    );
-    return responseGenerator(updatedUser['id'], 'user updated');
-  }
-
   @Get()
   async currentUser(@Req() req) {
-    return req.user;
+    const currentUser = await this.usersService.currentUser(req.user)
+    return currentUser;
   }
 }
