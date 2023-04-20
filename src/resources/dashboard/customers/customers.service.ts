@@ -15,7 +15,7 @@ export class CustomersService {
   ) {}
 
   async findUserByID(user: IUser) {
-    return await this.userModel.findOne({ email: user.id });
+    return await this.userModel.findOne({mobile: user.id})
   }
 
   async create(createCustomerDto: CreateCustomerDto, user: IUser) {

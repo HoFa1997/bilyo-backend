@@ -11,12 +11,6 @@ export class User {
   name: string;
 
   @Prop({ default: null })
-  password: string;
-
-  @Prop()
-  email: string;
-
-  @Prop({ default: null })
   mobile: string;
 
   @Prop({ default: null })

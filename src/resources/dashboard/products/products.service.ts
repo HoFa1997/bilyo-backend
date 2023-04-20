@@ -14,7 +14,7 @@ export class ProductsService {
   async create(createProductDto: CreateProductDto, user: unknown | User) {
     const createdUser = await this.productModel.create({
       ...createProductDto,
-      user: user['_id'],
+      user: user['id'],
     });
 
     return createdUser;
@@ -23,7 +23,7 @@ export class ProductsService {
   async findAll(user: User | unknown) {
     const getUserProducts: Product[] = await this.productModel.find(
       {
-        user: user['_id'],
+        user: user['id'],
       },
       { user: 0 },
     );
@@ -36,7 +36,7 @@ export class ProductsService {
     }
 
     const getUserProduct: Product = await this.productModel.findOne(
-      { user: user['_id'], _id: id },
+      { user: user['id'], _id: id },
       { user: 0 },
     );
     if (!getUserProduct) {
@@ -51,7 +51,6 @@ export class ProductsService {
     user: User | unknown,
   ) {
     const getUserProduct = await this.findOne(id, user);
-
     const updatedProduct: Product = await this.productModel.findByIdAndUpdate(
       getUserProduct['_id'],
       updateProductDto,
