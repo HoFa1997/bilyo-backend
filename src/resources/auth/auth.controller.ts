@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Post,
   UsePipes,
 } from '@nestjs/common';
@@ -27,5 +28,12 @@ export class AuthController {
   @UsePipes(new JoiValidationPipe(MobileOtpValidator))
   async checkOtp(@Body() verifyOtpDto: IMobileOtp) {
     return await this.authService.checkotp(verifyOtpDto);
+  }
+
+  @Get("invalid")
+  async invalid(@Body() verifyOtpDto: IMobileOtp) {
+    return {
+      message: "khodas"
+    }
   }
 }
